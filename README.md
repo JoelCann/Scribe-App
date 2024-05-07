@@ -1,0 +1,1 @@
+The Scribe App is a note taking Web Application. Work just like the notes.app on apple devices or sticky notes on windows... It allows users to draft and save short notes for future references, and also allows users to delete each note taken when not relevant anymore.
