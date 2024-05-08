@@ -39,6 +39,7 @@ function CreateArea(props) {
     <div>
       <form>
         <input
+          style={{ fontWeight: "300" }}
           name="title"
           value={noteItems.title}
           placeholder="Title"
