@@ -1,4 +1,5 @@
 import React from "react";
+import DeleteForeverSharpIcon from '@mui/icons-material/DeleteForeverSharp';
 
 function Note(props) {
   return (
@@ -7,7 +8,7 @@ function Note(props) {
       <p>{props.content}</p>
       <button onClick={() => {
         props.delete(props.targetId)
-      }}>DELETE</button>
+      }}><DeleteForeverSharpIcon /></button>
     </div>
   );
 }

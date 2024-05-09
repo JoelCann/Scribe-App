@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import Fab from '@mui/material/Fab';
+import Zoom from '@mui/material/Zoom';
+
 
 function CreateArea(props) {
 
   //Declaration of state and state functions
+  const [noteClicked, setNoteClicked] = useState(false);
   const [noteItems, setNoteItems] = useState({
     title: "",
     textArea: ""
@@ -34,34 +39,44 @@ function CreateArea(props) {
     }
   }
 
+  function handleTextAreaClick() {
+    setNoteClicked(true);
+  }
+
 
   return (
     <div>
-      <form>
-        <input
+      <form className="create-note">
+        {noteClicked && <input
           style={{ fontWeight: "300" }}
           name="title"
           value={noteItems.title}
           placeholder="Title"
           onChange={handleTextChange}
-        />
+        />}
+
         <textarea
           name="content"
           value={noteItems.textArea}
           placeholder="Take a note..."
-          rows="3"
+          rows={noteClicked ? "3" : "1"}
+          onClick={handleTextAreaClick}
           onChange={handleTextChange}
         />
-        <button onClick={(e) => {
-          props.onAddbtnClick(noteItems);
-          e.preventDefault();
-          setNoteItems(() => {
-            return {
-              title: "",
-              textArea: ""
-            }
-          });
-        }}>Add</button>
+        <Zoom in={noteClicked ? true : false} >
+          <Fab onClick={(e) => {
+            props.onAddbtnClick(noteItems);
+            e.preventDefault();
+            setNoteItems(() => {
+              return {
+                title: "",
+                textArea: ""
+              }
+            });
+          }}>
+            <AddRoundedIcon />
+          </Fab>
+        </Zoom>
       </form>
     </div>
   );
