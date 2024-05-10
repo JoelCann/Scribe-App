@@ -1,41 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Fab from '@mui/material/Fab';
 import Zoom from '@mui/material/Zoom';
 
-
 function CreateArea(props) {
-
-  //Declaration of state and state functions
   const [noteClicked, setNoteClicked] = useState(false);
   const [noteItems, setNoteItems] = useState({
     title: "",
     textArea: ""
   });
+  // Creating a ref for the input field
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
 
   function handleTextChange(e) {
-
-    //Destructuring of 'event.target' object, to enable easy
-    //access to contained values in setState functions
-    //(ie. Avoiding synthetic ... issues).
     const { name: inputName, value: newValue } = e.target;
 
-    //  Storing user input as objects in our state variable (noteItems).
     if (inputName === "title") {
-      setNoteItems((prevValue) => {
-        return ({
-          title: newValue,
-          textArea: prevValue.textArea
-        })
-      });
-    }
-    else if (inputName === "content") {
-      setNoteItems((prevValue) => {
-        return ({
-          title: prevValue.title,
-          textArea: newValue
-        })
-      });
+      setNoteItems((prevValue) => ({
+        ...prevValue,
+        title: newValue
+      }));
+    } else if (inputName === "content") {
+      setNoteItems((prevValue) => ({
+        ...prevValue,
+        textArea: newValue
+      }));
     }
   }
 
@@ -43,19 +33,44 @@ function CreateArea(props) {
     setNoteClicked(true);
   }
 
+  function validate(e) {
+    if (noteItems.title === "") {
+      alert(`Ooops! You forgot to add your title.`);
+      // Focus on the title input field
+      titleRef.current.focus();
+    } else if (noteItems.textArea === "") {
+      // Open the alert
+      alert(`Ooops! You forgot to add your content.`);
+      // Focus on the textarea
+      contentRef.current.focus();
+    } else {
+      props.onAddbtnClick(noteItems);
+      e.preventDefault();
+      setNoteItems({
+        title: "",
+        textArea: ""
+      });
+      // Focus on the title input field after successful submission
+      titleRef.current.focus();
+    }
+  }
 
   return (
     <div>
       <form className="create-note">
-        {noteClicked && <input
-          style={{ fontWeight: "300" }}
-          name="title"
-          value={noteItems.title}
-          placeholder="Title"
-          onChange={handleTextChange}
-        />}
+        {noteClicked && (
+          <input
+            ref={titleRef}
+            style={{ fontWeight: "300" }}
+            name="title"
+            value={noteItems.title}
+            placeholder="Title"
+            onChange={handleTextChange}
+          />
+        )}
 
         <textarea
+          ref={contentRef}
           name="content"
           value={noteItems.textArea}
           placeholder="Take a note..."
@@ -63,26 +78,16 @@ function CreateArea(props) {
           onClick={handleTextAreaClick}
           onChange={handleTextChange}
         />
-        <Zoom in={noteClicked ? true : false} >
-          <Fab onClick={(e) => {
-            props.onAddbtnClick(noteItems);
-            e.preventDefault();
-            setNoteItems(() => {
-              return {
-                title: "",
-                textArea: ""
-              }
-            });
-          }}>
+        <Zoom in={noteClicked}>
+          <Fab onClick={validate}>
             <AddRoundedIcon />
           </Fab>
         </Zoom>
       </form>
+
+
     </div>
   );
 }
 
 export default CreateArea;
-
-
-//This Component returns the input fields/form where the data entry is made. 

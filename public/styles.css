@@ -23,6 +23,10 @@ header {
   background-image: url("https://www.transparenttextures.com/patterns/dark-wood.png");
 }
 
+header .emoji2 {
+  float: right;
+}
+
 header h1 {
   color: #fff;
   font-family: "McLaren", cursive;
