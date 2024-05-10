@@ -13,6 +13,7 @@ function CreateArea(props) {
   const titleRef = useRef(null);
   const contentRef = useRef(null);
 
+
   function handleTextChange(e) {
     const { name: inputName, value: newValue } = e.target;
 
@@ -29,9 +30,11 @@ function CreateArea(props) {
     }
   }
 
+
   function handleTextAreaClick() {
     setNoteClicked(true);
   }
+
 
   function validate(e) {
     if (noteItems.title === "") {
